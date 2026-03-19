@@ -1,4 +1,8 @@
 import { useState, useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 function App() {
   const [image, setImage] = useState(null);
@@ -15,68 +19,74 @@ function App() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // API call will be wired up in the next step
+    // API call wired up in next step
     console.log('submitting', { image, price });
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-md w-full max-w-md p-8">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-xl">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-3xl font-bold text-primary tracking-tight">
+            FlipCheck
+          </CardTitle>
+          <CardDescription>
+            Upload a garment photo to get a Depop resale estimate.
+          </CardDescription>
+        </CardHeader>
 
-        <h1 className="text-3xl font-bold text-purple-600 mb-2">FlipCheck</h1>
-        <p className="text-gray-500 text-sm mb-6">Upload a garment photo to get a resale estimate.</p>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
-          {/* Image upload */}
-          <div
-            onClick={() => fileInputRef.current.click()}
-            className="border-2 border-dashed border-gray-300 rounded-xl h-52 flex items-center justify-center cursor-pointer hover:border-purple-400 transition overflow-hidden"
-          >
-            {previewUrl ? (
-              <img src={previewUrl} alt="preview" className="h-full w-full object-cover" />
-            ) : (
-              <div className="text-center text-gray-400">
-                <p className="text-4xl mb-1">📷</p>
-                <p className="text-sm">Click to upload a photo</p>
-              </div>
-            )}
-          </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-
-          {/* Price input */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Purchase price ($)
-            </label>
+            {/* Image upload */}
+            <div
+              onClick={() => fileInputRef.current.click()}
+              className="border-2 border-dashed border-border rounded-xl h-56 flex items-center justify-center cursor-pointer hover:border-primary/60 transition-colors overflow-hidden bg-muted/30"
+            >
+              {previewUrl ? (
+                <img src={previewUrl} alt="preview" className="h-full w-full object-cover rounded-xl" />
+              ) : (
+                <div className="text-center text-muted-foreground select-none">
+                  <p className="text-4xl mb-2">📷</p>
+                  <p className="text-sm font-medium">Click to upload a photo</p>
+                  <p className="text-xs mt-1 opacity-60">JPG, PNG, WEBP</p>
+                </div>
+              )}
+            </div>
             <input
-              type="number"
-              min="0"
-              step="0.01"
-              placeholder="e.g. 12.00"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
             />
-          </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={!image || !price}
-            className="bg-purple-600 text-white font-semibold py-2 rounded-lg hover:bg-purple-700 transition disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            Check It
-          </button>
+            {/* Price input */}
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="price">Purchase price ($)</Label>
+              <Input
+                id="price"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="e.g. 12.00"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
 
-        </form>
-      </div>
+            {/* Submit */}
+            <Button
+              type="submit"
+              disabled={!image || !price}
+              className="w-full font-semibold cursor-pointer"
+            >
+              Check It
+            </Button>
+
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
